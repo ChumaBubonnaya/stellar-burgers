@@ -1,0 +1,54 @@
+[
+  {
+    "_id": "bun-one",
+    "name": "Тестовая булка",
+    "type": "bun",
+    "price": 100,
+    "proteins": 10,
+    "fat": 5,
+    "carbohydrates": 20,
+    "calories": 100,
+    "image": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E",
+    "image_large": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E",
+    "image_mobile": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E"
+  },
+  {
+    "_id": "bun-two",
+    "name": "Другая булка",
+    "type": "bun",
+    "price": 150,
+    "proteins": 10,
+    "fat": 5,
+    "carbohydrates": 20,
+    "calories": 100,
+    "image": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E",
+    "image_large": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E",
+    "image_mobile": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E"
+  },
+  {
+    "_id": "main-one",
+    "name": "Тестовая начинка",
+    "type": "main",
+    "price": 50,
+    "proteins": 10,
+    "fat": 5,
+    "carbohydrates": 20,
+    "calories": 100,
+    "image": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E",
+    "image_large": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E",
+    "image_mobile": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E"
+  },
+  {
+    "_id": "sauce-one",
+    "name": "Тестовый соус",
+    "type": "sauce",
+    "price": 25,
+    "proteins": 10,
+    "fat": 5,
+    "carbohydrates": 20,
+    "calories": 100,
+    "image": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E",
+    "image_large": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E",
+    "image_mobile": "data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"120\"%3E%3Cellipse cx=\"120\" cy=\"60\" rx=\"80\" ry=\"40\" fill=\"mediumpurple\"/%3E%3C/svg%3E"
+  }
+]

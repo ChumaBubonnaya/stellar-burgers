@@ -42,3 +42,10 @@
   color: #f00;
   text-align: center;
 }
+
+.fields {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
