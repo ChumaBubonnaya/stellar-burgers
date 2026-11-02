@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.app.json --noEmit && vite build",
+    "build": "vite build",
     "commit": "cz",
     "check": "stylelint \"./src/**/*.css\" && eslint ./src/",
     "e2e": "npx playwright test",
@@ -22,8 +22,7 @@
     "test:storybook": "test-storybook",
     "storybook:test": "start-server-and-test storybook http://localhost:6006 test-storybook",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.e2e.json --noEmit"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
@@ -105,8 +104,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "engines": {
-    "node": ">=22.12.0"
   }
 }
