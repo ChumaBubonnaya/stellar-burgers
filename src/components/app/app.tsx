@@ -1,69 +1,54 @@
 import { AppHeader } from '@components';
-import { ConstructorPage } from '@pages';
 import { Preloader } from '@ui';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 
-import type { AppContentProps } from './type';
-import type { TIngredient } from '@utils-types';
+import { selectCatalog } from '@services/selectors';
+import { loadCatalog } from '@services/slices/catalog';
+import { restoreSession } from '@services/slices/session';
+import { useDispatch, useSelector } from '@services/store';
+
+import { AppRoutes } from './app-routes';
 
 import '../../index.css';
 
 import styles from './app.module.css';
 
 const App = (): React.JSX.Element => {
-  const ingredients: TIngredient[] = [];
-  const isIngredientsLoading = false;
-  const ingredientsError = null;
+  const dispatch = useDispatch();
+  const { items, status, error } = useSelector(selectCatalog);
+
+  useEffect(() => {
+    void dispatch(loadCatalog());
+    void dispatch(restoreSession());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      <AppContent
-        ingredients={ingredients}
-        isLoading={isIngredientsLoading}
-        error={ingredientsError}
-      />
+      {(status === 'idle' || status === 'loading') && <Preloader />}
+      {status === 'failed' && (
+        <div className={styles.message} role="alert">
+          <p className="text text_type_main-default">
+            Не удалось загрузить ингредиенты: {error}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              void dispatch(loadCatalog());
+            }}
+          >
+            Повторить
+          </button>
+        </div>
+      )}
+      {status === 'ready' &&
+        (items.length ? (
+          <AppRoutes />
+        ) : (
+          <p className={styles.message}>Нет ингредиентов</p>
+        ))}
     </div>
   );
 };
 
 export default App;
-
-/* Маршруты показываются только когда ингредиенты загружены: без них не
-   отрисовать ни конструктор, ни состав заказа. */
-const AppContent = ({
-  ingredients,
-  isLoading,
-  error,
-}: AppContentProps): React.JSX.Element => {
-  if (isLoading) {
-    return <Preloader />;
-  }
-
-  if (error) {
-    return (
-      <p className={`${styles.message} text text_type_main-medium`}>
-        Не удалось загрузить ингредиенты
-        {error.message ? `: ${error.message}` : '.'}
-      </p>
-    );
-  }
-
-  if (!ingredients.length) {
-    return (
-      <p className={`${styles.message} text text_type_main-medium`}>Нет ингредиентов</p>
-    );
-  }
-
-  return <RouteComponent />;
-};
-
-const RouteComponent = (): React.JSX.Element => {
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<ConstructorPage />} />
-      </Routes>
-    </>
-  );
-};

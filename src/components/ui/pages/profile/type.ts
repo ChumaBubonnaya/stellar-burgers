@@ -6,6 +6,7 @@ export type ProfileUIProps = {
     email: string;
     password: string;
   };
+  pending?: boolean;
   isFormChanged: boolean;
   handleSubmit: (e: SyntheticEvent) => void;
   handleCancel: (e: SyntheticEvent) => void;

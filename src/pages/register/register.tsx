@@ -1,25 +1,36 @@
 import { RegisterUI } from '@ui-pages';
-import { type SyntheticEvent, useState } from 'react';
+import { useState } from 'react';
+
+import { useSessionForm } from '@hooks/use-session-form';
+import { signUp } from '@services/slices/session';
+import { useDispatch } from '@services/store';
+
+import type { SyntheticEvent } from 'react';
 
 export const Register = (): React.JSX.Element => {
+  const dispatch = useDispatch();
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleSubmit = (e: SyntheticEvent): void => {
-    e.preventDefault();
+  const { pending, errorText } = useSessionForm();
+  const handleSubmit = (event: SyntheticEvent): void => {
+    event.preventDefault();
+    if (!pending)
+      void dispatch(signUp({ name: userName.trim(), email: email.trim(), password }));
   };
-
   return (
     <RegisterUI
-      errorText=""
-      email={email}
-      userName={userName}
-      password={password}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      setUserName={setUserName}
-      handleSubmit={handleSubmit}
+      {...{
+        userName,
+        setUserName,
+        email,
+        setEmail,
+        password,
+        setPassword,
+        pending,
+        errorText,
+        handleSubmit,
+      }}
     />
   );
 };

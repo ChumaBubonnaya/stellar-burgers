@@ -2,10 +2,13 @@ import { setCookie, getCookie } from './cookie';
 
 import type { TIngredient, TOrder, TUser } from './types';
 
-const URL = process.env.BURGER_API_URL;
+const URL = process.env.BURGER_API_URL || 'https://norma.ffapi.ru/api';
 
-const checkResponse = <T>(res: Response): Promise<T> =>
-  res.ok ? res.json() : res.json().then((err) => Promise.reject(toApiError(err)));
+const checkResponse = async <T>(res: Response): Promise<T> => {
+  const payload = (await res.json()) as T & { success?: boolean };
+  if (!res.ok || payload.success === false) throw toApiError(payload);
+  return payload;
+};
 
 type TServerResponse<T = unknown> = {
   success: boolean;
@@ -17,6 +20,7 @@ type TServerResponse<T = unknown> = {
  * kept in `cause` for debugging.
  */
 const toApiError = (payload: unknown): Error => {
+  if (payload instanceof Error) return payload;
   const message =
     typeof payload === 'object' &&
     payload !== null &&
@@ -33,7 +37,7 @@ type TRefreshResponse = TServerResponse<{
   accessToken: string;
 }>;
 
-export const refreshToken = (): Promise<TRefreshResponse> =>
+const requestNewTokens = (): Promise<TRefreshResponse> =>
   fetch(`${URL}/auth/token`, {
     method: 'POST',
     headers: {
@@ -53,6 +57,16 @@ export const refreshToken = (): Promise<TRefreshResponse> =>
       return refreshData;
     });
 
+let activeRefresh: Promise<TRefreshResponse> | null = null;
+
+// Concurrent requests share a single refresh, preventing token rotation races.
+export const refreshToken = (): Promise<TRefreshResponse> => {
+  activeRefresh ??= requestNewTokens().finally(() => {
+    activeRefresh = null;
+  });
+  return activeRefresh;
+};
+
 export const fetchWithRefresh = async <T>(
   url: RequestInfo,
   options: RequestInit
@@ -61,13 +75,11 @@ export const fetchWithRefresh = async <T>(
     const res = await fetch(url, options);
     return await checkResponse<T>(res);
   } catch (err) {
-    if ((err as { message: string }).message === 'jwt expired') {
+    if (err instanceof Error && err.message === 'jwt expired') {
       const refreshData = await refreshToken();
-      if (options.headers) {
-        (options.headers as Record<string, string>).authorization =
-          refreshData.accessToken;
-      }
-      const res = await fetch(url, options);
+      const headers = new Headers(options.headers);
+      headers.set('authorization', refreshData.accessToken);
+      const res = await fetch(url, { ...options, headers });
       return await checkResponse<T>(res);
     } else {
       return Promise.reject(toApiError(err));

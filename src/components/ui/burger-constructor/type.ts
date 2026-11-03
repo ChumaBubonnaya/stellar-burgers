@@ -4,6 +4,7 @@ export type BurgerConstructorUIProps = {
   constructorItems: TConstructorState;
   orderRequest: boolean;
   price: number;
+  errorText?: string;
   orderModalData: TOrder | null;
   onOrderClick: () => void;
   closeOrderModal: () => void;
