@@ -7,8 +7,6 @@ import {
   selectOrder,
   selectUser,
 } from '@services/selectors';
-import { loadFeed } from '@services/slices/feed';
-import { loadHistory } from '@services/slices/history';
 import { closeReceipt, submitOrder } from '@services/slices/order';
 import { useDispatch, useSelector } from '@services/store';
 
@@ -28,12 +26,7 @@ export const BurgerConstructor = (): React.JSX.Element => {
     if (!constructorItems.bun) return;
     const bunId = constructorItems.bun._id;
     const ids = [bunId, ...constructorItems.ingredients.map((item) => item._id), bunId];
-    void dispatch(submitOrder(ids)).then((action) => {
-      if (submitOrder.fulfilled.match(action)) {
-        void dispatch(loadFeed());
-        void dispatch(loadHistory());
-      }
-    });
+    void dispatch(submitOrder(ids));
   };
   return (
     <BurgerConstructorUI

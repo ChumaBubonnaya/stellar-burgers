@@ -100,9 +100,13 @@ export const changePassword = createAsyncThunk(
   }
 );
 
-const sessionSlice = createSlice({
+export const sessionSlice = createSlice({
   name: 'session',
   initialState,
+  selectors: {
+    selectSession: (state): SessionState => state,
+    selectUser: (state): TUser | null => state.user,
+  },
   reducers: {
     clearSessionError: (state) => {
       state.error = null;
@@ -178,4 +182,3 @@ const sessionSlice = createSlice({
 });
 
 export const { clearSessionError } = sessionSlice.actions;
-export default sessionSlice.reducer;

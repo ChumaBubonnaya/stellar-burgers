@@ -15,9 +15,14 @@ export const loadFeed = createAsyncThunk('feed/load', getFeedsApi, {
   condition: (_, { getState }) => !(getState() as { feed: TFeedState }).feed.isLoading,
 });
 
-const feedSlice = createSlice({
+export const feedSlice = createSlice({
   name: 'feed',
   initialState,
+  selectors: {
+    selectFeed: (state): TFeedState => state,
+    selectFeedOrder: (state, number: number): TFeedState['orders'][number] | undefined =>
+      state.orders.find((order) => order.number === number),
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -37,5 +42,3 @@ const feedSlice = createSlice({
       });
   },
 });
-
-export default feedSlice.reducer;

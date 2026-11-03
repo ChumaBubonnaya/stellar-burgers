@@ -1,4 +1,4 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSelector, createSlice, nanoid } from '@reduxjs/toolkit';
 
 import { submitOrder } from './order';
 
@@ -11,9 +11,18 @@ import type {
 
 const initialState: TConstructorState = { bun: null, ingredients: [] };
 
-const builderSlice = createSlice({
+export const builderSlice = createSlice({
   name: 'builder',
   initialState,
+  selectors: {
+    selectBuilder: (state): TConstructorState => state,
+    selectBurgerPrice: createSelector(
+      (state: TConstructorState) => state,
+      ({ bun, ingredients }) =>
+        (bun?.price ?? 0) * 2 +
+        ingredients.reduce((total, item) => total + item.price, 0)
+    ),
+  },
   reducers: {
     addIngredient: {
       prepare: (ingredient: TIngredient) => ({
@@ -46,4 +55,3 @@ const builderSlice = createSlice({
 });
 
 export const { addIngredient, removeIngredient, moveIngredient } = builderSlice.actions;
-export default builderSlice.reducer;

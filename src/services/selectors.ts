@@ -1,19 +1,13 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { builderSlice } from './slices/builder';
+import { catalogSlice } from './slices/catalog';
+import { feedSlice } from './slices/feed';
+import { historySlice } from './slices/history';
+import { orderSlice } from './slices/order';
+import { sessionSlice } from './slices/session';
 
-import type { RootState } from './store';
-
-export const selectCatalog = (state: RootState): RootState['catalog'] => state.catalog;
-export const selectIngredients = (state: RootState): RootState['catalog']['items'] =>
-  state.catalog.items;
-export const selectBuilder = (state: RootState): RootState['builder'] => state.builder;
-export const selectSession = (state: RootState): RootState['session'] => state.session;
-export const selectUser = (state: RootState): RootState['session']['user'] =>
-  state.session.user;
-export const selectOrder = (state: RootState): RootState['order'] => state.order;
-export const selectFeed = (state: RootState): RootState['feed'] => state.feed;
-export const selectHistory = (state: RootState): RootState['history'] => state.history;
-export const selectBurgerPrice = createSelector(
-  selectBuilder,
-  ({ bun, ingredients }) =>
-    (bun?.price ?? 0) * 2 + ingredients.reduce((total, item) => total + item.price, 0)
-);
+export const { selectBuilder, selectBurgerPrice } = builderSlice.selectors;
+export const { selectCatalog, selectIngredients } = catalogSlice.selectors;
+export const { selectFeed, selectFeedOrder } = feedSlice.selectors;
+export const { selectHistory, selectHistoryOrder } = historySlice.selectors;
+export const { selectOrder } = orderSlice.selectors;
+export const { selectSession, selectUser } = sessionSlice.selectors;

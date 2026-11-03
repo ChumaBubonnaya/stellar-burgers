@@ -9,6 +9,7 @@ type OrderState = {
   error: string | null;
   detail: TOrder | null;
   detailLoading: boolean;
+  detailNumber: number | null;
   detailError: string | null;
   detailRequestId: string | null;
 };
@@ -19,6 +20,7 @@ const initialState: OrderState = {
   error: null,
   detail: null,
   detailLoading: false,
+  detailNumber: null,
   detailError: null,
   detailRequestId: null,
 };
@@ -40,12 +42,21 @@ export const loadOrderDetails = createAsyncThunk(
     const order = orders.find((item) => item.number === number);
     if (!order) throw new Error('Заказ не найден');
     return order;
+  },
+  {
+    condition: (number, { getState }) => {
+      const { order } = getState() as { order: OrderState };
+      return !order.detailLoading || order.detailNumber !== number;
+    },
   }
 );
 
-const orderSlice = createSlice({
+export const orderSlice = createSlice({
   name: 'order',
   initialState,
+  selectors: {
+    selectOrder: (state): OrderState => state,
+  },
   reducers: {
     closeReceipt: (state) => {
       state.receipt = null;
@@ -70,6 +81,7 @@ const orderSlice = createSlice({
       .addCase(loadOrderDetails.pending, (state, action) => {
         state.detail = null;
         state.detailLoading = true;
+        state.detailNumber = action.meta.arg;
         state.detailError = null;
         state.detailRequestId = action.meta.requestId;
       })
@@ -87,4 +99,3 @@ const orderSlice = createSlice({
 });
 
 export const { closeReceipt } = orderSlice.actions;
-export default orderSlice.reducer;

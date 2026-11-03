@@ -23,9 +23,14 @@ export const loadHistory = createAsyncThunk('history/load', getOrdersApi, {
     !(getState() as { history: HistoryState }).history.loading,
 });
 
-const historySlice = createSlice({
+export const historySlice = createSlice({
   name: 'history',
   initialState,
+  selectors: {
+    selectHistory: (state): HistoryState => state,
+    selectHistoryOrder: (state, number: number): TOrder | undefined =>
+      state.orders.find((order) => order.number === number),
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -47,5 +52,3 @@ const historySlice = createSlice({
       });
   },
 });
-
-export default historySlice.reducer;
