@@ -1,22 +1,24 @@
 import { LoginUI } from '@ui-pages';
-import { type SyntheticEvent, useState } from 'react';
+import { useState } from 'react';
+
+import { useSessionForm } from '@hooks/use-session-form';
+import { signIn } from '@services/slices/session';
+import { useDispatch } from '@services/store';
+
+import type { SyntheticEvent } from 'react';
 
 export const Login = (): React.JSX.Element => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleSubmit = (e: SyntheticEvent): void => {
-    e.preventDefault();
+  const { pending, errorText } = useSessionForm();
+  const handleSubmit = (event: SyntheticEvent): void => {
+    event.preventDefault();
+    if (!pending) void dispatch(signIn({ email: email.trim(), password }));
   };
-
   return (
     <LoginUI
-      errorText=""
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
-      handleSubmit={handleSubmit}
+      {...{ email, setEmail, password, setPassword, pending, errorText, handleSubmit }}
     />
   );
 };

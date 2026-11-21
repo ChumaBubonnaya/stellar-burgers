@@ -1,40 +1,32 @@
-import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
-import { type SyntheticEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+
+import { useSessionForm } from '@hooks/use-session-form';
+import { changePassword } from '@services/slices/session';
+import { useDispatch } from '@services/store';
+
+import type { SyntheticEvent } from 'react';
 
 export const ResetPassword = (): React.JSX.Element => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
-  const [error, setError] = useState<Error | null>(null);
-
-  const handleSubmit = (e: SyntheticEvent): void => {
-    e.preventDefault();
-
-    setError(null);
-    void resetPasswordApi({ password, token })
-      .then(() => {
-        localStorage.removeItem('resetPassword');
-        void navigate('/login');
-      })
-      .catch((err: Error) => setError(err));
+  const [canReset] = useState(() => !!localStorage.getItem('resetPassword'));
+  const { pending, errorText } = useSessionForm();
+  const handleSubmit = (event: SyntheticEvent): void => {
+    event.preventDefault();
+    if (pending) return;
+    void dispatch(changePassword({ password, token: token.trim() })).then((action) => {
+      if (changePassword.fulfilled.match(action))
+        void navigate('/login', { replace: true });
+    });
   };
-
-  useEffect(() => {
-    if (!localStorage.getItem('resetPassword')) {
-      void navigate('/forgot-password', { replace: true });
-    }
-  }, [navigate]);
-
+  if (!canReset) return <Navigate to="/forgot-password" replace />;
   return (
     <ResetPasswordUI
-      errorText={error?.message}
-      password={password}
-      token={token}
-      setPassword={setPassword}
-      setToken={setToken}
-      handleSubmit={handleSubmit}
+      {...{ password, setPassword, token, setToken, pending, errorText, handleSubmit }}
     />
   );
 };
