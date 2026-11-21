@@ -1,3 +1,9 @@
+# Stellar Burgers — этап тестирования
+
+Добавлены 40 тестов Jest и 10 браузерных сценариев Playwright с HAR.
+Описание, запуск и результаты: [TESTING.md](TESTING.md).
+Загрузка кода и сдача: [SUBMISSION.md](SUBMISSION.md).
+
 # Стартер на TypeScript для проекта Stellar Burger
 
 ## Процедура создания коммита с проверками

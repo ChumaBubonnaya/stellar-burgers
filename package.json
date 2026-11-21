@@ -6,9 +6,9 @@
   "scripts": {
     "build": "vite build",
     "commit": "cz",
-    "check": "stylelint \"./src/**/*.css\" && eslint ./src/",
-    "e2e": "npx playwright test",
-    "e2e:ui": "npx playwright test --ui",
+    "check": "stylelint \"./src/**/*.css\" && eslint ./src/ ./tests/",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
     "deploy": "gh-pages -d dist",
     "eslint": "eslint ./src/ --fix",
     "lint": "npm run stylelint && npm run eslint && npm run prettier",
@@ -22,7 +22,9 @@
     "test:storybook": "test-storybook",
     "storybook:test": "start-server-and-test storybook http://localhost:6006 test-storybook",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test:coverage": "jest --coverage --runInBand",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.test.json && tsc --noEmit -p tsconfig.e2e.json && tsc --noEmit -p tsconfig.node.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
